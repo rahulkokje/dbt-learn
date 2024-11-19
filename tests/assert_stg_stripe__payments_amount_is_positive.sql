@@ -1,6 +1,6 @@
-with payments as {
-    select * from ref('stg_stripe__payments')
-}
+with payments as (
+    select * from {{ ref('stg_stripe__payments') }}
+)
 select
     order_id,
     sum(amount) as total_amount
