@@ -1,7 +1,6 @@
 select
     id as customer_id,
     first_name,
-    last_name,
-    'YES' as is_alive
+    last_name
 
 from {{ source("jaffle_shop", "customers") }}

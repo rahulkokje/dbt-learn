@@ -2,30 +2,57 @@ version: 2
 
 models:
   - name: stg_jaffle_shop__customers
+    latest_version: 1
     description: One unique customer per row
-    materialized: table
+    config:
+      contracts:
+        enforced: true
     columns:
       - name: customer_id
+        data_type: string
         description: Primary key
-        tests:
+        constraints:
+          - type: not_null
+        data_tests:
           - unique
           - not_null
+      - name: first_name
+        data_type: string
+        description: First name of the customer
+      - name: last_name
+        data_type: string
+        description: Last name of the customer
+      - name: is_alive
+        description: Customer is alive
+        constraints:
+          - type: not_null
+    
+    versions:
+      - v: 0
+        defined_in: stg_jaffle_shop__customers
+        config:
+          alias: stg_jaffle_shop__customers
+      - v: 1
+        columns:
+          - include: all
+            exclude: [is_alive]
+
   - name: stg_jaffle_shop__orders
     description: One order per row
     materialized: table
     columns:
       - name: order_id
         description: Primary key
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: status
         description: "{{ doc('order_status') }}"
-        tests:
+        data_tests:
           - accepted_values:
               values: ['shipped', 'completed', 'return_pending', 'returned', 'placed']
       - name: customer_id
-        tests:
+        data_tests:
           - relationships:
               to: ref('stg_jaffle_shop_customers')
               field: customer_id
