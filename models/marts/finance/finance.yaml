@@ -1,0 +1,17 @@
+models:
+  - name: fct_orders
+    description: Fact model for all customer orders
+    columns:
+      - name: order_id
+        description: Unique identifier for order
+      - name: customer_id
+        description: Unique identifier for the customer placing the order
+        #data_tests:
+        #  - unique:
+        #      config:
+        #        store_failures: true
+        #        schema: test_failures
+      - name: order_date
+        description: Date when the order was placed
+      - name: amount
+        description: Amount of the order
